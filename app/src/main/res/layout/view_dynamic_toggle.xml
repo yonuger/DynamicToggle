@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.young.dynamictoggle.DynamicToggleButton
+    android:id="@+id/rl_toggle"
+    android:layout_width="80dp"
+    android:layout_height="40dp"
+    android:layout_centerInParent="true"
+    android:background="@drawable/toggle_background"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:id="@+id/circle"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/toggle_button_background"/>
+
+</com.young.dynamictoggle.DynamicToggleButton>
