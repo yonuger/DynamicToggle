@@ -1,8 +1,12 @@
 package com.young.dynamictoggle;
 
 import android.animation.Animator;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -67,6 +71,7 @@ public class DynamicToggleButton extends RelativeLayout{
                 else {
                     circle.setTranslationX(40 + value / 3 * 2);
                 }
+
             }
         });
         va2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -110,11 +115,22 @@ public class DynamicToggleButton extends RelativeLayout{
         va2.setDuration(500);
         va1.start();
 
+        int colorA = Color.parseColor("#303F9F");
+        int colorB = Color.parseColor("#FF4081");
+        GradientDrawable drawable = (GradientDrawable) circle.getBackground();
+        ObjectAnimator objectAnimator;
+
         if( isOn ){
             isOn = false;
+            objectAnimator = ObjectAnimator.ofInt(drawable,"color",colorA,colorB);
         }else{
             isOn = true;
+            objectAnimator = ObjectAnimator.ofInt(drawable,"color",colorB,colorA);
         }
+
+        objectAnimator.setDuration(1000);
+        objectAnimator.setEvaluator(new ArgbEvaluator());
+        objectAnimator.start();
 
     }
 }
