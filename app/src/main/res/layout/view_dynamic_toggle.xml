@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.young.dynamictoggle.DynamicToggleButton
-    android:id="@+id/rl_toggle"
+    android:id="@+id/dytoggle_button"
     android:layout_width="80dp"
     android:layout_height="40dp"
     android:layout_centerInParent="true"

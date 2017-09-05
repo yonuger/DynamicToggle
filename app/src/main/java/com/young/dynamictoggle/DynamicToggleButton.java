@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -18,10 +19,15 @@ import android.widget.RelativeLayout;
 
 public class DynamicToggleButton extends RelativeLayout{
 
-    private RelativeLayout mToggleRl;
+    private DynamicToggleButton mToggleRl;
     private View circle;
 
+    private int colorA = Color.parseColor("#303F9F");
+    private int colorB = Color.parseColor("#FF4081");
+
     private boolean isOn = true;
+
+    private OnStateChangedListener onStateChangedListener;
 
     public DynamicToggleButton(Context context) {
         super(context);
@@ -38,11 +44,13 @@ public class DynamicToggleButton extends RelativeLayout{
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mToggleRl = (RelativeLayout) findViewById(R.id.rl_toggle);
+        mToggleRl = (DynamicToggleButton) findViewById(R.id.dytoggle_button);
         mToggleRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAnimation();
+                if( onStateChangedListener != null )
+                    onStateChangedListener.onStateChanged(isOn);
             }
         });
         circle = findViewById(R.id.circle);
@@ -115,8 +123,6 @@ public class DynamicToggleButton extends RelativeLayout{
         va2.setDuration(500);
         va1.start();
 
-        int colorA = Color.parseColor("#303F9F");
-        int colorB = Color.parseColor("#FF4081");
         GradientDrawable drawable = (GradientDrawable) circle.getBackground();
         ObjectAnimator objectAnimator;
 
@@ -133,4 +139,39 @@ public class DynamicToggleButton extends RelativeLayout{
         objectAnimator.start();
 
     }
+
+    public void setChecked(boolean checked) {
+        this.isOn = checked;
+        GradientDrawable drawable = (GradientDrawable) circle.getBackground();
+        if( isOn ){
+            drawable.setColor(colorA);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                circle.setBackground(drawable);
+            }
+            circle.setTranslationX(0);
+        }else{
+            drawable.setColor(colorB);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                circle.setBackground(drawable);
+            }
+            circle.setTranslationX(40);
+        }
+    }
+
+    public boolean isChecked() {
+        return isOn;
+    }
+
+    public OnStateChangedListener getOnStateChangedListener() {
+        return onStateChangedListener;
+    }
+
+    public void setOnStateChangedListener(OnStateChangedListener onStateChangedListener) {
+        this.onStateChangedListener = onStateChangedListener;
+    }
+
+    public interface OnStateChangedListener{
+        void onStateChanged(boolean isOn);
+    }
+
 }
